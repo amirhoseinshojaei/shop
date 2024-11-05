@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 import datetime
 from django.utils import timezone
 from django.db.models.signals import post_save
+from slugify import slugify
 # Create your models here.
 
 
@@ -107,4 +108,42 @@ def create_profile(sender, instance, created, **kwargs):
 # Automate profile things
 post_save.connect(Profile, sender= User)
 
+
+
+
+# Category for Products
+class Categories(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField()
+    date_joined = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(Categories, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
