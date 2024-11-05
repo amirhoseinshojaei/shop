@@ -5,6 +5,7 @@ import uuid
 from django.contrib.auth.hashers import make_password
 import datetime
 from django.utils import timezone
+from django.db.models.signals import post_save
 # Create your models here.
 
 
@@ -79,4 +80,31 @@ class User(AbstractBaseUser,PermissionsMixin):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+    
+
+# Profilr Users
+class Profile(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    address = models.TextField(max_length=15000)
+    postal_code = models.BigIntegerField()
+    city = models.CharField(max_length=200)
+    old_cart = models.CharField(max_length=200, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Profiles'
+
+    def __str__(self):
+        return self.user.phone_number
+    
+
+# Create a user profile by default when user signsup
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile(user=instance)
+        user_profile.save()
+
+# Automate profile things
+post_save.connect(Profile, sender= User)
+
     
