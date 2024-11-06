@@ -136,6 +136,7 @@ class Categories(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name = 'Category'
         verbose_name_plural = 'Categories'
         
     def save(self, *args, **kwargs):
