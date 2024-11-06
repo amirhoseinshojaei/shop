@@ -5,8 +5,9 @@ import uuid
 from django.contrib.auth.hashers import make_password
 import datetime
 from django.utils import timezone
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from slugify import slugify
+from django.dispatch import receiver
 # Create your models here.
 
 
@@ -14,6 +15,14 @@ from slugify import slugify
 STATUS_CHOICES = [
     ('in_stock','InStock'),
     ('out_of_stock', 'Out Of Stock'),
+]
+
+
+# Status Orders
+STATUS_ORDERS = [
+    ('pending','Pending'),
+    ('delivered','Delivered'),
+    ('canceled','Canceled'),
 ]
 
 
@@ -127,6 +136,7 @@ class Categories(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name = 'Category'
         verbose_name_plural = 'Categories'
         
     def save(self, *args, **kwargs):
@@ -156,6 +166,7 @@ class Suppliers(models.Model):
 
 # All of Products
 class Products(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     slug = models.SlugField()
     category = models.ForeignKey(Categories, on_delete= models.CASCADE)
@@ -189,8 +200,52 @@ class Products(models.Model):
 
     
 
+# Order model
+class Orders(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    shipping_address = models.TextField(max_length=15000)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    shipped = models.BooleanField(default=False)
+    date_shipped = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=50, choices=STATUS_ORDERS, default='pending')
+
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+
+    def __str__(self):
+        return self.user.phone_number
+    
+# Auto add shipping date
+@receiver(pre_save,sender=Orders)
+def set_update_shipped_on_updated(sender,instance,**kwargs):
+    if instance.pk:
+        now = datetime.datetime.now()
+        obj = sender._default_manager.get(pk=instance.pk)
+    
+        if instance.shipped and not obj.shipped:
+            instance.date_shipped = now
 
 
+# OrderItem Model
+class OrderItems(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    order = models.ForeignKey(Orders, on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    product = models.ForeignKey(Products,on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        verbose_name = 'OrderItem'
+        verbose_name_plural = 'OrderItems'
+
+    def __str__(self):
+        return self.id
+    
 
 
 
