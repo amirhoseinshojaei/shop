@@ -17,6 +17,14 @@ STATUS_CHOICES = [
 ]
 
 
+# Status Orders
+STATUS_ORDERS = [
+    ('pending','Pending'),
+    ('delivered','Delivered'),
+    ('canceled','Canceled'),
+]
+
+
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, phone_number , password=None):
         if not email:
@@ -189,7 +197,25 @@ class Products(models.Model):
 
     
 
+# Order model
+class Orders(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    shipping_address = models.TextField(max_length=15000)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    shipped = models.BooleanField(default=False)
+    date_shipped = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=50, choices=STATUS_ORDERS, default='pending')
 
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+
+    def __str__(self):
+        return self.user.phone_number
+    
 
 
 
