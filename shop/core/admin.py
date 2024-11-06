@@ -6,13 +6,11 @@ from .models import User,Profile, Categories, Suppliers, Products, Orders, Order
 class ProfileInline(admin.StackedInline):
     model = Profile
 
-admin.site.register(Profile,ProfileInline)
-
 
 class OrderItemsInline(admin.StackedInline):
     model = OrderItems
 
-admin.register(OrderItems)
+
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -148,7 +146,7 @@ class ProductsAdmin(admin.ModelAdmin):
 @admin.register(Orders)
 class OrdersAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'fullname', 'city', 'shipping_address', 'amount_paid', 'shipped',
+        'user', 'full_name', 'city', 'shipping_address', 'amount_paid', 'shipped',
         'date_shipped', 'status'
     )
 
@@ -158,7 +156,7 @@ class OrdersAdmin(admin.ModelAdmin):
     )
 
     search_fields = ('fullname', 'city', 'shipping_address', 'status')
-    readonly_fields = ('date_shipped')
+    readonly_fields = ('date_shipped',)
 
     def has_add_permission(self, request):
         return request.user.is_superuser
