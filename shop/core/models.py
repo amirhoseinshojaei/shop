@@ -166,6 +166,7 @@ class Suppliers(models.Model):
 
 # All of Products
 class Products(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     slug = models.SlugField()
     category = models.ForeignKey(Categories, on_delete= models.CASCADE)
