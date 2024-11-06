@@ -1,6 +1,10 @@
 from django.contrib import admin
-from .models import User
+from .models import User,Profile, Categories, Suppliers, Products, Orders, OrderItems
 # Register your models here.
+
+@admin.register(Profile)
+class ProfileInline(admin.StackedInline):
+    model = Profile
 
 
 
@@ -9,6 +13,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = (
          'email', 'first_name', 'last_name', 'phone_number', 'date_joined', 'last_login', 'is_active', 'is_staff',
         'is_superuser')
+    inlines = [ProfileInline]
     list_filter = ('date_joined', 'is_active', 'is_staff', 'is_superuser')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     date_hierarchy = 'date_joined'
