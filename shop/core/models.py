@@ -5,8 +5,9 @@ import uuid
 from django.contrib.auth.hashers import make_password
 import datetime
 from django.utils import timezone
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from slugify import slugify
+from django.dispatch import receiver
 # Create your models here.
 
 
@@ -216,6 +217,15 @@ class Orders(models.Model):
     def __str__(self):
         return self.user.phone_number
     
+# Auto add shipping date
+@receiver(pre_save,sender=Orders)
+def set_update_shipped_on_updated(sender,instance,**kwargs):
+    if instance.pk:
+        now = datetime.datetime.now()
+        obj = sender._default_manager.get(pk=instance.pk)
+    
+        if instance.shipped and not obj.shipped:
+            instance.date_shipped = now
 
 
 
