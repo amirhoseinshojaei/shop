@@ -265,6 +265,14 @@ class ShippingAddress(models.Model):
     
 
 
+# Create a user shipping address by default when user signsup
+def create_shipping(sender ,created, instance, **kwargs):
+    if created:
+        user_shipping = ShippingAddress(user = instance)
+        user_shipping.save()
+
+# Automate the sipping address thing
+post_save.connect(create_shipping, sender= User)
 
 
     
