@@ -252,6 +252,7 @@ class OrderItems(models.Model):
 class ShippingAddress(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    city = models.CharField(max_length= 100)
     shipping_address_1 = models.TextField(max_length=15000)
     shipping_address_2 = models.TextField(max_length=15000, null=True, blank=True)
     postal_code_1 = models.CharField(max_length=50)
