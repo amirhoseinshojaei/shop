@@ -177,7 +177,7 @@ class OrdersAdmin(admin.ModelAdmin):
         return request.user.is_superuser or request.user.is_staff
         
 
-class ShippingAddress(admin.ModelAdmin):
+class ShippingAddressAdmin(admin.ModelAdmin):
     list_display = [
         'user', 'city' ,'postal_code_1', 'postal_code_2'
     ]
