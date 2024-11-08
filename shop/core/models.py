@@ -207,6 +207,7 @@ class Orders(models.Model):
     full_name = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     shipping_address = models.TextField(max_length=15000)
+    postal_code = models.CharField(max_length= 50)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
     shipped = models.BooleanField(default=False)
     date_shipped = models.DateTimeField(null=True, blank=True)
@@ -248,7 +249,34 @@ class OrderItems(models.Model):
     
 
 
+class ShippingAddress(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    city = models.CharField(max_length= 100)
+    shipping_address_1 = models.TextField(max_length=15000)
+    shipping_address_2 = models.TextField(max_length=15000, null=True, blank=True)
+    postal_code_1 = models.CharField(max_length=50)
+    postal_code_2 = models.CharField(max_length=50, null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = 'Shipping Address'
+
+    def __str__(self):
+        return self.id
+    
+
+
+# Create a user shipping address by default when user signsup
+def create_shipping(sender ,created, instance, **kwargs):
+    if created:
+        user_shipping = ShippingAddress(user = instance)
+        user_shipping.save()
+
+# Automate the sipping address thing
+post_save.connect(create_shipping, sender= User)
+
+
+    
 
 
 

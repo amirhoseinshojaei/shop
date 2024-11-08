@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Profile, Categories, Suppliers, Products, Orders, OrderItems
+from .models import User,Profile, Categories, Suppliers, Products, Orders, OrderItems, ShippingAddress
 # Register your models here.
 
 
@@ -176,3 +176,30 @@ class OrdersAdmin(admin.ModelAdmin):
     def has_read_permission(self, request, obj= None):
         return request.user.is_superuser or request.user.is_staff
         
+
+class ShippingAddressAdmin(admin.ModelAdmin):
+    list_display = [
+        'user', 'city' ,'postal_code_1', 'postal_code_2'
+    ]
+
+    list_filter = ('city',)
+    search_fields = ('city','postal_code_1','postal_code_2')
+    readonly_fields = ('user')
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser or request.user.is_staff
+    
+    def has_change_permission(self, request, obj = None):
+        return request.user.is_superuser or request.user.is_staff
+    
+    def has_delete_permission(self, request, obj = None):
+        return request.user.is_superuser or request.user.is_staff
+    
+    def has_module_permission(self, request):
+        return request.user.is_superuser or request.user.is_staff
+    
+    def has_view_permission(self, request, obj = None):
+        return request.user.is_superuser or request.user.is_staff
+    
+    def has_read_permission(self, request, obj= None):
+        return request.user.is_superuser or request.user.is_staff
