@@ -8,4 +8,5 @@ app_name = 'core'
 urlpatterns = [
     path('', views.index, name='home'),
     path('<str:slug>/', views.product_detail, name='product_detail'),
+    path('categories/', views.categories, name='categories'),
 ]
