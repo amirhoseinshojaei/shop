@@ -33,4 +33,8 @@ def product_detail(request, slug):
     
 
 
-
+def categories(request):
+    categories = Categories.objects.all()
+    return render(request, 'core/categories.html', context={
+        'categories':categories
+    })
