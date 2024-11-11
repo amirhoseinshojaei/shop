@@ -1,9 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import (User, Profile, Categories, Suppliers
                      , Products, Orders, OrderItems, ShippingAddress)
 
 from django.http import Http404
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import login
 # Create your views here.
 
 
@@ -64,3 +66,44 @@ def suggestions_proudcts(request):
     return render(request, 'core/suggestions.html', {
         'products':products
     })
+
+
+# Registration section
+
+
+def signup(request):
+    if request.method == 'POST':
+        phone_number = request.POST['phone_number']
+        email = request.POST['email']
+        password = request.POST['password']
+        password2 = request.POST['<PASSWORD>']
+
+        if password == password2:
+            if User.objects.filter(phone_number=phone_number).exists():
+                messages.error(request,'Phone number already exist')
+                return redirect('core:signup')
+            
+            elif User.objects.filter(email=email).exists():
+                messages.error(request,'email already exist')
+                return redirect('core:signup')
+            
+            else:
+                user= User.objects.create(
+                    phone_number=phone_number,
+                    email=email,
+                    password = make_password(password)
+                )
+
+                user.save()
+                messages.success(request, 'Account created')
+                login(request,user)
+                return redirect('core:index')
+        
+
+        else:
+            messages.error(request,'password must be match')
+            return redirect('core:signup'
+            )
+        
+    
+    return render(request,'register/signup.html',{})
