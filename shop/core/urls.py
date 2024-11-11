@@ -18,4 +18,7 @@ urlpatterns = [
     path('register/logout/', views.logout_user, name='logout'),
     path('register/why_logout/', views.why_logout, name='why_logout'),
     path('register/change_password/', views.change_password, name='change_password'),
+
+    # Profile section
+    path('profile/', views.profile_view, name='profile'),
 ]
