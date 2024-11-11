@@ -5,7 +5,7 @@ from .models import (User, Profile, Categories, Suppliers
 from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 # Create your views here.
 
 
@@ -107,3 +107,23 @@ def signup(request):
         
     
     return render(request,'register/signup.html',{})
+
+
+
+def login_user(request):
+    if request.method == 'POST':
+        phone_number = request.POST['phone_number']
+        password = request.POST['password']
+        user = authenticate(phone_number=phone_number, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request,'You are now Logged In')
+            return redirect('core:index')
+        
+        else:
+            messages.error(request,'Invalid phone number or password')
+            return redirect('core:login')
+        
+    
+    return render(request,'register/login.html',{})
