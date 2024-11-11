@@ -5,7 +5,7 @@ from .models import (User, Profile, Categories, Suppliers
 from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 # Create your views here.
 
 
@@ -127,3 +127,10 @@ def login_user(request):
         
     
     return render(request,'register/login.html',{})
+
+
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'You are logged out now')
+    return redirect('core:why_logout')
