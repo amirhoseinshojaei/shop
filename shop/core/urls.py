@@ -15,5 +15,6 @@ urlpatterns = [
     # Registrations section
     path('register/signup/', views.signup, name='signup'),
     path('register/login', views.login, name='login'),
-    path('register/logout/', views.logout_user, name='logout')
+    path('register/logout/', views.logout_user, name='logout'),
+    path('register/why_logout/', views.why_logout, name='why_logout'),
 ]
