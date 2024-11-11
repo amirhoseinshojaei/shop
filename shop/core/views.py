@@ -38,3 +38,17 @@ def categories(request):
     return render(request, 'core/categories.html', context={
         'categories':categories
     })
+
+
+def category_detail(request, slug):
+    try:
+        category = get_object_or_404(Categories, slug=slug)
+        product = Products.objects.filter(category=category)
+        return render(request, 'category_detail.html',{
+            'category':category,
+            'product':product
+        })
+    
+    except Http404:
+        messages.error(request, 'Category does not exist')
+        return render(request, '404.html', status=404)
