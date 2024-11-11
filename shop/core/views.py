@@ -163,3 +163,11 @@ def change_password(request):
             return redirect('core:change_password')
         
     return render(request, 'register/change_password.html', {})
+
+
+# Profile
+
+@login_required
+def profile_view(request):
+    profile = request.user.profile
+    return render(request, 'core/profile.html', {'profile':profile})
