@@ -14,4 +14,5 @@ urlpatterns = [
 
     # Registrations section
     path('register/signup/', views.signup, name='signup'),
+    path('register/login', views.login, name='login'),
 ]
