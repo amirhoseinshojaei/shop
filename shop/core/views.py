@@ -6,6 +6,7 @@ from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -138,3 +139,27 @@ def logout_user(request):
 
 def why_logout(request):
     return render(request, 'register/why_logout.html',{})
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        new_password2 = request.POST['new_password2']
+
+        if not request.user.check_password(current_password):
+            messages.error('current password is Incorrect')
+            return redirect('core:change_password')
+        
+        if new_password == new_password2:
+            request.user.password = make_password(new_password)
+            request.user.save()
+            messages.success('password changed successfully')
+            return redirect('core:index')
+        
+        else:
+            messages.error(request,'new password must be match')
+            return redirect('core:change_password')
+        
+    return render(request, 'register/change_password.html', {})
