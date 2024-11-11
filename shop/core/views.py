@@ -171,3 +171,21 @@ def change_password(request):
 def profile_view(request):
     profile = request.user.profile
     return render(request, 'core/profile.html', {'profile':profile})
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        profile = user.profile
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.save()
+        profile.address = request.POST['address']
+        profile.postal_code = request.POST['postal_code']
+        profile.city = request.POST['city']
+        profile.save()
+
+        return redirect('core:profile')
+    
+    return render(request, 'core/edit_profile.html', {})
