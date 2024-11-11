@@ -134,3 +134,7 @@ def logout_user(request):
     logout(request)
     messages.success(request, 'You are logged out now')
     return redirect('core:why_logout')
+
+
+def why_logout(request):
+    return render(request, 'register/why_logout.html',{})
