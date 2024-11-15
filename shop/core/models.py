@@ -102,9 +102,9 @@ class User(AbstractBaseUser,PermissionsMixin):
 # Profilr Users
 class Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.TextField(max_length=15000)
-    postal_code = models.BigIntegerField()
+    postal_code = models.BigIntegerField(null=True,blank=True)
     city = models.CharField(max_length=200)
     old_cart = models.CharField(max_length=200, blank=True, null=True)
 
@@ -116,13 +116,17 @@ class Profile(models.Model):
     
 
 # Create a user profile by default when user signsup
+@receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        user_profile = Profile(user=instance)
-        user_profile.save()
+        Profile.objects.create(user=instance)
 
-# Automate profile things
-post_save.connect(Profile, sender= User)
+
+@receiver(post_save, sender=User)
+def save_profile(sender,instance,**kwargs):
+    instance.profile.save()
+
+
 
 
 

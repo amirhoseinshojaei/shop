@@ -51,10 +51,10 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{% url 'core:categories' %}">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                {% for category in categories %}
+                                {% for category in categories.all %}
 
 
-                                <li><a class="dropdown-item" href="{% url 'categories' category.slug %}">{{category.slug}}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'core:category_detail' category.slug %}">{{category.slug}}</a></li>
                    
                                 
                                 {% endfor %}
