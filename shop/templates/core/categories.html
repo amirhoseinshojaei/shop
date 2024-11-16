@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+{% block content %}
+
+    {% include 'header.html' %}
+
+
+    
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Categories</title>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    </head>
+    <body>
+        <header>
+            <h1>Categories</h1>
+        </header>
+        <main>
+            <ul>
+                {% for category in categories %}
+                    <li>
+                        <a href="{% url 'core:category_detail' slug=category.slug %}">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </body>
+    </html>
+
+
+
+
+    {% include 'footer.html' %}
+
+
+
+
+{% endblock content %}
+
+
+
+
+
