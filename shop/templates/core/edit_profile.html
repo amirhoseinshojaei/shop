@@ -1,0 +1,76 @@
+
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+        {% include 'header.html' %}
+
+
+
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Edit Profile</title>
+            <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        </head>
+        <body>
+            <header>
+                <h1>Edit Profile</h1>
+            </header>
+            <main>
+                <form method="post" action="{% url 'core:profile_edit' %}">
+                    {% csrf_token %}
+                    <section>
+                        <h2>Personal Information</h2>
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+                    </section>
+                    <section>
+                        <h2>Address Information</h2>
+                        <label for="address">Address:</label>
+                        <textarea id="address" name="address">{{ profile.address }}</textarea>
+                        <label for="postal_code">Postal Code:</label>
+                        <input type="text" id="postal_code" name="postal_code" value="{{ profile.postal_code }}">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" value="{{ profile.city }}">
+                    </section>
+                    <button type="submit">Save Changes</button>
+                </form>
+            </main>
+        </body>
+        </html>
+        
+
+
+
+
+
+
+
+
+
+        {% include 'footer.html' %}
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
