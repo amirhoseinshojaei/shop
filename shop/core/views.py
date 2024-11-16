@@ -51,7 +51,7 @@ def category_detail(request, slug):
     try:
         category = get_object_or_404(Categories, slug=slug)
         product = Products.objects.filter(category=category)
-        return render(request, 'category_detail.html',{
+        return render(request, 'core/category_detail.html',{
             'category':category,
             'product':product
         })
