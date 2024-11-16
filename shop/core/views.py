@@ -58,7 +58,7 @@ def category_detail(request, slug):
     
     except Http404:
         messages.error(request, 'Category does not exist')
-        return render(request, '404.html', status=404)\
+        return render(request, '404.html', status=404)
         
 
 
