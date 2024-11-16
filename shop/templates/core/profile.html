@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+        {% include 'header.html' %}
+
+
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Profile</title>
+            <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        </head>
+        <body>
+            <header>
+                <h1>{{ user.first_name }} {{ user.last_name }}'s Profile</h1>
+            </header>
+            <main>
+                <section>
+                    <h2>Personal Information</h2>
+                    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+                </section>
+                <section>
+                    <h2>Address Information</h2>
+                    <p><strong>Address:</strong> {{ profile.address }}</p>
+                    <p><strong>Postal Code:</strong> {{ profile.postal_code }}</p>
+                    <p><strong>City:</strong> {{ profile.city }}</p>
+                </section>
+                <a href="{% url 'core:profile_edit' %}">Edit Profile</a>
+            </main>
+        </body>
+        </html>
+        
+
+
+
+
+
+
+        {% include 'footer.html' %}
+
+
+{% endblock content %}
+
+
+
+
+
