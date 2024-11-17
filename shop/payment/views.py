@@ -22,13 +22,13 @@ def orders(request, id):
                 order = Orders.objects.filter(id=id)
                 # Update the status
                 now = datetime.datetime.now()
-                order.update(shipped=True, date_shipped=now)
+                order.update(shipped=True, date_shipped=now, status='delivered')
 
             else:
                 # Get the order
                 order = Orders.objects.filter(id=id)
                 # Update the status
-                order.update(shipped=False)
+                order.update(shipped=False, status='canceled')
             
             messages.success(request, "shipping status updated")
 
@@ -44,4 +44,13 @@ def orders(request, id):
         return redirect('core:home')
     
 
-
+def orders_list(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Orders.objects.all()
+        return render(request, 'payment/orders_list.html', {
+            'orders':orders
+        })
+    
+    else:
+        messages.error(request, 'Access Denied')
+        return redirect('core:home')
