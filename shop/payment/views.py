@@ -54,3 +54,16 @@ def orders_list(request):
     else:
         messages.error(request, 'Access Denied')
         return redirect('core:home')
+    
+
+
+def orders_not_shipped_list(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Orders.objects.filter(shipped=False)
+        return render(request, 'payment/orders_not_shipped.html', {
+            'orders': orders
+        })
+    
+    else:
+        messages.error(request, 'Access Denied')
+        return redirect('core:home')
