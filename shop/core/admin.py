@@ -147,7 +147,7 @@ class ProductsAdmin(admin.ModelAdmin):
 class OrdersAdmin(admin.ModelAdmin):
     list_display = (
         'user', 'full_name', 'city', 'shipping_address', 'amount_paid', 'shipped',
-        'date_shipped', 'status'
+        'date_shipped', 'status','id'
     )
 
     inlines = [OrderItemsInline]
