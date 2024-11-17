@@ -249,7 +249,7 @@ class OrderItems(models.Model):
         verbose_name_plural = 'OrderItems'
 
     def __str__(self):
-        return self.id
+        return str(self.id)
     
 
 
@@ -266,7 +266,7 @@ class ShippingAddress(models.Model):
         verbose_name_plural = 'Shipping Address'
 
     def __str__(self):
-        return self.id
+        return str(self.id)
     
 
 
