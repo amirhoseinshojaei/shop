@@ -86,7 +86,7 @@
         	{% endfor %}
             <div align="right">
             <h3>Total: ${{ totals }}</h3>
-            {% comment %} <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a> {% endcomment %}
+            <a href="{% url 'payment:process_order' %}" class="btn btn-success">Checkout</a>
 
             </div>
             <br/><br/><br/>
