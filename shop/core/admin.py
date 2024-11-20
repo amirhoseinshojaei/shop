@@ -203,3 +203,7 @@ class ShippingAddressAdmin(admin.ModelAdmin):
     
     def has_read_permission(self, request, obj= None):
         return request.user.is_superuser or request.user.is_staff
+    
+
+
+admin.site.register(ShippingAddress)
