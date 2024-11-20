@@ -224,15 +224,26 @@ class Orders(models.Model):
     def __str__(self):
         return self.user.phone_number
     
-# Auto add shipping date
-@receiver(pre_save,sender=Orders)
-def set_update_shipped_on_updated(sender,instance,**kwargs):
-    if instance.pk:
-        now = datetime.datetime.now()
-        obj = sender._default_manager.get(pk=instance.pk)
+# # Auto add shipping date
+# @receiver(pre_save,sender=Orders)
+# def set_update_shipped_on_updated(sender,instance,**kwargs):
+#     if instance.pk:
+#         now = datetime.datetime.now()
+#         obj = sender._default_manager.get(pk=instance.pk)
     
-        if instance.shipped and not obj.shipped:
-            instance.date_shipped = now
+#         if instance.shipped and not obj.shipped:
+#             instance.date_shipped = now
+
+@receiver(pre_save, sender=Orders)
+def set_update_shipped_on_updated(sender, instance, **kwargs):
+    if instance.pk:
+        try:
+            obj = sender.objects.get(pk=instance.pk)
+            # انجام عملیات‌های مورد نظر
+        except sender.DoesNotExist:
+            # عملیات دیگر در صورت عدم وجود
+            pass
+
 
 
 # OrderItem Model
